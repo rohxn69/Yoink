@@ -1,11 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Yoink</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yoink Master Tool Repo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef1f5;
+    --card-bg: #ffffff;
+    --ink: #16202c;
+    --ink-soft: #5b6b7c;
+    --border: #dbe1e8;
+    --navy: #16202c;
+    --navy-soft: #24334a;
+    --accent: #c8752e;
+    --accent-dark: #a85f22;
+    --accent-tint: #fbeade;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle at 1px 1px, rgba(22,32,44,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    color: var(--ink);
+    max-width: 900px;
+    margin: 48px auto;
+    padding: 0 20px 60px;
+  }
+  /* ---- Masthead ---- */
+  .masthead {
+    background: var(--navy);
+    background-image: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 30px 34px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 6px;
+    background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 6px, transparent 6px, transparent 12px);
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200, 117, 46, 0.25);
+  }
+  .masthead h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: #aab6c4;
+    margin: 0;
+    max-width: 52ch;
+  }
+  /* ---- Grid card ---- */
+  .card {
+    background: var(--card-bg);
+    padding: 30px 30px 28px;
+    border-radius: 0 0 var(--radius) var(--radius);
+    border: 1px solid var(--border);
+    border-top: none;
+    box-shadow: 0 12px 28px -14px rgba(22, 32, 44, 0.22);
+  }
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    background: #f7f9fb;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.08s ease;
+    position: relative;
+  }
+  .tool-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-tint);
+    transform: translateY(-2px);
+  }
+  .tool-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--accent-tint);
+    border: 1px solid var(--accent);
+    color: var(--accent-dark);
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-2deg);
+  }
+  .tool-card:hover .tool-badge {
+    background: #fff;
+  }
+  .tool-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+  .tool-desc {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    flex: 1;
+  }
+  .tool-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .tool-link::after {
+    content: "↗";
+    font-size: 0.85rem;
+  }
+  footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-family: 'Inter', sans-serif;
+  }
+  footer a {
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(168, 95, 34, 0.35);
+  }
+  footer a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
 </head>
 <body>
-    <h1>Welcome to Yoink</h1>
+  <div class="masthead">
+    <p class="eyebrow">Manifest · Master Index</p>
+    <h1>Yoink Master Tool Repo</h1>
+  </div>
+  <div class="card">
+    <div class="tool-grid">
 
-    <a href="barcode/">Barcode Validator</a>
+      <a class="tool-card" href="https://rohxn69.github.io/Amazon_reporter/" target="_blank" rel="noopener">
+        <div class="tool-badge">01</div>
+        <div class="tool-name">SKU Sentinel</div>
+        <div class="tool-desc">Cross-checks your Amazon listing report against internal restrictions and exports a clean root-cause report.</div>
+        <div class="tool-link">rohxn69.github.io/Amazon_reporter</div>
+      </a>
+
+      <a class="tool-card" href="https://rohxn69.github.io/barcodechecker/" target="_blank" rel="noopener">
+        <div class="tool-badge">02</div>
+        <div class="tool-name">Supplier Barcode Validator</div>
+        <div class="tool-desc">Checks a supplier_barcode column for blanks, non-numeric characters, and incorrect length.</div>
+        <div class="tool-link">rohxn69.github.io/barcodechecker</div>
+      </a>
+
+      <a class="tool-card" href="https://rohxn69.github.io/pdf-tools/" target="_blank" rel="noopener">
+        <div class="tool-badge">03</div>
+        <div class="tool-name">Merge PDFs</div>
+        <div class="tool-desc">Select PDF files, arrange the order, then download one combined file.</div>
+        <div class="tool-link">rohxn69.github.io/pdf-tools</div>
+      </a>
+
+    </div>
+  </div>
+  <footer>
+    Created by <a href="mailto:rohan.shetty@pertemba.com">Rohan Shetty</a>
+  </footer>
 </body>
 </html>
